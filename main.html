@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+<head>
+<!-- basic.html -->
+<title>Online Assembler</title>
+<meta charset = "UTF-8" />
+
+<link rel="stylesheet" type="text/css" href="code/style.css">
+</head>
+<body>
+
+
+
+<div class="container">
+    <h1>Browser assmbler</h1>
+    <div >
+        <button type="button" class="button" onclick="runAssembler()">Compile</button>
+    </div>
+    
+    <div class="frame">
+        <div class="textarea-container">
+            <textarea class="code-textarea" row="100" id="assembly-code" onkeyup="compileEvent(event)" autofocus></textarea>
+        </div>  
+        <div class="textarea-container">
+            <textarea class="code-textarea" id="machine-code" readonly></textarea>
+        </div>  
+    </div>  
+    <h2>
+        Errorlist
+    </h2>
+    <div class="error-box-container">
+        <textarea id="error-box" rows="10" cols="70" readonly>
+        </textarea>
+    </div>
+    <div >
+        <button type="button" class="button" onclick="clearErrorListTextarea()">Clear error list</button>
+    </div>
+    
+    <h2>Examples</h1>
+</div>
+
+
+</body>
+    <script src="code/assembler.js"></script>
+    <script src="code/UIinterface.js"></script>
+    <script src="code/ISA.js"></script>
+</html>
