@@ -32,7 +32,7 @@ let textParser={
     getMnemonic(instruction, linenumber){
         let spaceIndex=instruction.indexOf(' ');
         if(spaceIndex<0){
-            throw {type: 'E', msg:`You must have one instruction and at least one operand: ${inst}`, linenumber}
+            throw {type: 'E', msg:`You must have one instruction and at least one operand: ${instruction}`, linenumber}
         }
 
         return instruction.substring(0, spaceIndex);

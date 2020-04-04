@@ -8,6 +8,11 @@ function getAssemblyTextArea() {
     return value.split('\n');
 }
 
+function setAssemblyTextArea(rows){
+
+    document.getElementById("assembly-code").value = rows.join('\n')
+}
+
 function setMachinecodeTextArea(rows){
 
     document.getElementById("machine-code").value = rows.join('\n')

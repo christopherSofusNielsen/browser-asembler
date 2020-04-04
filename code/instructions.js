@@ -123,6 +123,59 @@ let instructions={
         return binary;
     },
 
+    getAddress(immediate, minValue, maxValue, linenumber){
+
+        let val=parseInt(immediate);
+
+        if(isNaN(val)){
+            throw {type: 'E', msg:`Immediate must be an integer`, linenumber}
+        }
+        if(val<minValue){
+            throw {type: 'E', msg:`Immediate must bigger than or equal to ${minValue}`, linenumber}
+        }
+        if(val>maxValue){
+            throw {type: 'E', msg:`Immediate must smaller than or equal to ${maxValue}`, linenumber}
+        }
+
+        if(val===0){
+            return{
+                RD: "000",
+                SB: "000"
+            }
+        }else if(val>0){
+            let valBinary=val.toString(2);
+            let valExtendedBinary=this.extendBinary(valBinary, '0', 6);
+            return{
+                RD: valExtendedBinary.slice(0,3),
+                SB: valExtendedBinary.slice(3,6)
+            }
+        }else{
+            val=-1*val-1;
+            let valBinary=val.toString(2);
+            valInverted=this.invertBinary(valBinary);
+            let valExtendedBinary=this.extendBinary(valInverted, '1', 6);
+            return{
+                RD: valExtendedBinary.slice(0,3),
+                SB: valExtendedBinary.slice(3,6)
+            }
+        }
+    },
+
+    extendBinary(val, sign, totalLength){
+        let nExtend=totalLength-val.length;
+        for(let i=0; i<nExtend; i++){
+            val=sign+val;
+        }
+        return val;
+    },
+
+    invertBinary(val){
+        val=val.replace(/0/g, 'N');
+        val=val.replace(/1/g, '0');
+        val=val.replace(/N/g, '1');
+        return val;
+    },
+
     twoOpsSourceA(mnemonic, operands, linenumber){
         //check operands
         this.checkOperands(operands, 2, linenumber);
@@ -227,7 +280,17 @@ let instructions={
     },
 
     branchs(mnemonic, operands, linenumber){
+        //check operands
+        this.checkOperands(operands, 2, linenumber);
 
+        //get opcode
+        let opcode=this.getOpcode(mnemonic);
+
+        //operands to binary
+        let op0=this.getBinaryReg(operands[0], linenumber);
+        let immediate=this.getAddress(operands[1], -32, 31, linenumber)
+    
+        return `${opcode}${immediate.RD}${op0}${immediate.SB}`;
     },
 
     jump(mnemonic, operands, linenumber){

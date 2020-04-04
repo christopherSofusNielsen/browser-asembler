@@ -45,7 +45,20 @@ let setDisplayOutputs=()=>{
         setMachinecodeScroll(getAssemblyScroll());
     }
         
-}       
+}   
+
+let loadExample=()=>{
+    let example=[
+        "; use semmicolon to add comment",
+        "",
+        "; ADD DR, SA, SB => R[DR] <- R[SA]+R[SB]",
+        "ADD R2, R0, R1   ; Place R0+R1 in R2",
+        "",
+        "; end of example, use ctrl+enter to compile."
+    ]
+
+    setAssemblyTextArea(example);
+}
 
 
 
@@ -79,7 +92,19 @@ let display={
 
     displayHex(words){
         let hex=words.map(w=>{
-            return parseInt(w.word, 2).toString(16)
+            let hex=parseInt(w.word, 2).toString(16);
+            switch(hex.length){
+                case 1:
+                    hex="000"+hex;
+                    break;
+                case 2:
+                    hex="00"+hex;
+                    break;
+                case 3:
+                    hex="0"+hex;
+                    break;
+            }
+            return hex
         });
 
         //join to one index
