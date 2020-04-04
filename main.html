@@ -7,19 +7,27 @@
 
 <link rel="stylesheet" type="text/css" href="code/style.css">
 </head>
-<body>
+<body onload="onload()">
 
 
 
 <div class="container">
     <h1>Browser assmbler</h1>
     <div >
+        <button type="button" class="button" onclick="loadExample()">Load example</button>
         <button type="button" class="button" onclick="runAssembler()">Compile</button>
+
+        <label id="label-display-modes" for="display-modes">Display output as:</label>
+        <select id="display-modes" onchange="onDisplayModeChange(event)">
+            <option value="binary">Machinecode</option>
+            <option value="debug">Debug</option>
+            <option value="hex">Hex for VHDL</option>
+          </select>
     </div>
     
     <div class="frame">
         <div class="textarea-container">
-            <textarea class="code-textarea" row="100" id="assembly-code" onkeyup="compileEvent(event)" autofocus></textarea>
+            <textarea class="code-textarea" onscroll="onAssemblyScroll(event)" row="100" id="assembly-code" onkeyup="compileEvent(event)" autofocus></textarea>
         </div>  
         <div class="textarea-container">
             <textarea class="code-textarea" id="machine-code" readonly></textarea>
@@ -29,19 +37,49 @@
         Errorlist
     </h2>
     <div class="error-box-container">
-        <textarea id="error-box" rows="10" cols="70" readonly>
+        <textarea id="error-box" rows="10" cols="40" readonly>
         </textarea>
     </div>
     <div >
         <button type="button" class="button" onclick="clearErrorListTextarea()">Clear error list</button>
     </div>
     
-    <h2>Examples</h1>
-</div>
+    <h1>Documentation</h1>
+    <h3>How to use it?</h3>
+    <ul>
+        <li>Write assembly in the text box to the right</li>
+        <li>Instuction and operands are separated with space(s)</li>
+        <li>Operands are separated with comma, you are free to space(s) after the comma</li>
+        <li>Click &quot;Compile&quot; to to compile assembly to machinecode<br>or use ctrl+enter as short cut</li>
+        <li>Put semicolon in front of comments</li>
+        <li>You are free to add empty lines and spacess, but don&#39;t use tab!</li>
+        <li>If the syntax is not correct, see the error in the error list</li>
+    </ul>
+    <h3>Registers and immediates as operands</h3>
+    <ul>
+        <li>Addresses to register are R0, R1...R7</li>
+        <li>Immidiates for &nbsp;LDI, ADI must be between 0 and 7 (3 bits)</li>
+        <li>Immediates for BRN, BRZ must be between -32 and 31 (6 bit 2&#39;s complement)</li>
+    </ul>
+    <h3>Display output</h3>
+    <ul>
+        <li>Use the dropdown menu to select display mode</li>
+        <li>Mode &quot;Machinecode&quot; will display each instruction as a word (16bit)</li>
+        <li>Mode &quot;Debug&quot; will display the instruction as &quot;opcode&emsp;DR&emsp;SA&emsp;SB&quot;.<br>Each instruction will be placed on the same line as the assembly code.</li>
+        <li>Mode &quot;Hex&quot; will display all instruction as one long hex string, ready to copy to the RAM</li>
+    </ul>
+    <p><br></p>
+    <p><br></p>
+    <p><br></p>
+    </div>
 
 
 </body>
     <script src="code/assembler.js"></script>
     <script src="code/UIinterface.js"></script>
     <script src="code/ISA.js"></script>
+    <script src="code/textParser.js"></script>
+    <script src="code/errorHandler.js"></script>
+    <script src="code/instructions.js"></script>
+    <script src="code/displayHandler.js"></script>
 </html>
