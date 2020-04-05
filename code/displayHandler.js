@@ -48,23 +48,9 @@ let setDisplayOutputs=()=>{
 }   
 
 let loadExample=()=>{
-    let example=[
-        "; use semmicolon to add comment",
-        "",
-        "; ADD DR, SA, SB => R[DR] <- R[SA]+R[SB]",
-        "ADD R2, R0, R1   ; Place R0+R1 in R2",
-        "",
-        "; end of example, use ctrl+enter to compile."
-    ]
-
+    
     setAssemblyTextArea(example);
 }
-
-
-
-
-
-
 
 
 let display={
@@ -92,7 +78,7 @@ let display={
 
     displayHex(words){
         let hex=words.map(w=>{
-            let hex=parseInt(w.word, 2).toString(16);
+            let hex=parseInt(w.word, 2).toString(16).toUpperCase();
             switch(hex.length){
                 case 1:
                     hex="000"+hex;

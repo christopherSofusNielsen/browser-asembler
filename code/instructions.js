@@ -21,13 +21,12 @@ let instructions={
             case 'INC':
             case 'DEC':
             case 'NOT':
+            case 'LRI':
                 word=this.twoOpsSourceA(mnemonic, operands, linenumber)
                 break;
 
             //2 operands, source B
             case 'MOVB':
-            case 'SHR':
-            case 'SHL':
                 word=this.twoOpsSourceB(mnemonic, operands, linenumber)
                 break;
 
@@ -66,6 +65,15 @@ let instructions={
             case 'JMP':
                 word=this.jump(mnemonic, operands, linenumber)
                 break;
+
+            //Not used
+            case 'SHR':
+            case 'SHL':
+                throw {type: 'E', msg:`SHR and SHL are not supported, use SRM and SLM`, linenumber}
+
+            case 'SRM':
+            case 'SLM':
+                throw {type: 'E', msg:`SRM and SLM are not supported`, linenumber}
 
             default:
                 throw {type: 'E', msg:`Unknown instruction: ${mnemonic}`, linenumber}

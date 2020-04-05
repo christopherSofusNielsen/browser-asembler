@@ -62,11 +62,16 @@ body {
     height: 100%;
     position: relative;
     font-size: large;
+    resize: none;
 }
 
 .textarea-container{
     position: relative;
     min-height: 600px;
     width: 50%;
-    padding-left: 10px;
-}   
+    padding: 10px;
+}  
+
+.image{
+    width: 100%;
+}

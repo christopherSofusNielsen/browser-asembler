@@ -2,7 +2,7 @@
 <html lang = "en">
 <head>
 <!-- basic.html -->
-<title>Online Assembler</title>
+<title>Browser assembler</title>
 <meta charset = "UTF-8" />
 
 <link rel="stylesheet" type="text/css" href="code/style.css">
@@ -12,7 +12,7 @@
 
 
 <div class="container">
-    <h1>Browser assmbler</h1>
+    <h1>Browser assembler</h1>
     <div >
         <button type="button" class="button" onclick="loadExample()">Load example</button>
         <button type="button" class="button" onclick="runAssembler()">Compile</button>
@@ -47,11 +47,11 @@
     <h1>Documentation</h1>
     <h3>How to use it?</h3>
     <ul>
-        <li>Write assembly in the text box to the right</li>
+        <li>Write assembly in the textbox to the right</li>
         <li>Instuction and operands are separated with space(s)</li>
-        <li>Operands are separated with comma, you are free to space(s) after the comma</li>
+        <li>Operands are separated with comma, you are free to add space(s) after the comma</li>
         <li>Click &quot;Compile&quot; to to compile assembly to machinecode<br>or use ctrl+enter as short cut</li>
-        <li>Put semicolon in front of comments</li>
+        <li>Put semicolon in front of comments, also for inline comments</li>
         <li>You are free to add empty lines and spacess, but don&#39;t use tab!</li>
         <li>If the syntax is not correct, see the error in the error list</li>
     </ul>
@@ -68,6 +68,9 @@
         <li>Mode &quot;Debug&quot; will display the instruction as &quot;opcode&emsp;DR&emsp;SA&emsp;SB&quot;.<br>Each instruction will be placed on the same line as the assembly code.</li>
         <li>Mode &quot;Hex&quot; will display all instruction as one long hex string, ready to copy to the RAM</li>
     </ul>
+    <h3>Instruction set</h3>
+    <img src="./code/instructionSet.png" class="image" alt="Instruction Set Table">
+    
     <p><br></p>
     <p><br></p>
     <p><br></p>
@@ -82,4 +85,5 @@
     <script src="code/errorHandler.js"></script>
     <script src="code/instructions.js"></script>
     <script src="code/displayHandler.js"></script>
+    <script src="code/example.js"></script>
 </html>
