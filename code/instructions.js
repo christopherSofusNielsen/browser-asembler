@@ -223,7 +223,7 @@ let instructions={
         //operands to binary
         let op0=this.getBinaryReg(operands[0], linenumber);
         let op1=this.getBinaryReg(operands[1], linenumber);
-        let op2=this.getBinaryReg(operands[1], linenumber);
+        let op2=this.getBinaryReg(operands[2], linenumber);
         
 
         return `${opcode}${op0}${op1}${op2}`;
