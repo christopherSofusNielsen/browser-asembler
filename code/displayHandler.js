@@ -77,24 +77,48 @@ let display={
     },
 
     displayHex(words){
-        let hex=words.map(w=>{
-            let hex=parseInt(w.word, 2).toString(16).toUpperCase();
-            switch(hex.length){
-                case 1:
-                    hex="000"+hex;
-                    break;
-                case 2:
-                    hex="00"+hex;
-                    break;
-                case 3:
-                    hex="0"+hex;
-                    break;
-            }
-            return hex
-        });
+        // adr 0 to right, and 16 in one row
 
-        //join to one index
-        return [hex.join('')];
+        let row='';
+        let rows=[];
+
+        for(let i=1; i<=words.length; i++){
+            
+            let hex=this.wordToHex(words[i-1].word);
+            row=hex+row;
+
+            if(i%16===0){
+                rows.push(row);
+                row=''
+            }
+        }
+
+        row=this.zeroFillRow(row);
+        rows.push(row);
+        return rows;
+    },
+
+    wordToHex(word){
+        let hex=parseInt(word, 2).toString(16).toUpperCase();
+        switch(hex.length){
+            case 1:
+                hex="000"+hex;
+                break;
+            case 2:
+                hex="00"+hex;
+                break;
+            case 3:
+                hex="0"+hex;
+                break;
+        }
+        return hex
+    },
+
+    zeroFillRow(row){
+        while(row.length<64){
+            row='0'+row;
+        }
+        return row;
     },
 
     getTotalLines(){
