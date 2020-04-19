@@ -21,12 +21,13 @@ let instructions={
             case 'INC':
             case 'DEC':
             case 'NOT':
-            case 'LRI':
                 word=this.twoOpsSourceA(mnemonic, operands, linenumber)
                 break;
 
             //2 operands, source B
             case 'MOVB':
+            case 'SHR':
+            case 'SHL':
                 word=this.twoOpsSourceB(mnemonic, operands, linenumber)
                 break;
 
@@ -46,6 +47,10 @@ let instructions={
             case 'ADI':
                 word=this.immediateAdd(mnemonic, operands, linenumber)
                 break;
+            case 'LBI':
+                word=this.bigImmediateLoad(mnemonic, operands, linenumber)
+                break;
+            
 
             //memory
             case 'LD':
@@ -58,6 +63,7 @@ let instructions={
             //branch and jump
             case 'BRZ':
             case 'BRN':
+            case 'CDB':
                 word=this.branchs(mnemonic, operands, linenumber)
                 break;
 
@@ -66,14 +72,12 @@ let instructions={
                 word=this.jump(mnemonic, operands, linenumber)
                 break;
 
-            //Not used
-            case 'SHR':
-            case 'SHL':
-                throw {type: 'E', msg:`SHR and SHL are not supported, use SRM and SLM`, linenumber}
-
             case 'SRM':
             case 'SLM':
                 throw {type: 'E', msg:`SRM and SLM are not supported`, linenumber}
+
+            case 'LRI':
+                throw {type: 'E', msg:`LRI is not supported, use two LD instead`, linenumber}
 
             default:
                 throw {type: 'E', msg:`Unknown instruction: ${mnemonic}`, linenumber}
@@ -107,7 +111,7 @@ let instructions={
         return isa.regcode[index];
     },
 
-    getImmediate(immediate, minValue, maxValue, linenumber){
+    getImmediate(immediate, minValue, maxValue, length, linenumber){
         let val=parseInt(immediate);
 
         if(isNaN(val)){
@@ -122,13 +126,17 @@ let instructions={
 
         let binary=val.toString(2);
 
-        if(binary.length===1){
-            binary="00"+binary;
-        }else if(binary.length===2){
-            binary="0"+binary;
-        }
+        binary=this.zeroFill(binary, length);
 
         return binary;
+    },
+
+    zeroFill(val, length){
+        let newVal=val;
+        while(newVal.length<length){
+            newVal='0'+newVal;
+        }
+        return newVal;
     },
 
     getAddress(immediate, minValue, maxValue, linenumber){
@@ -239,7 +247,7 @@ let instructions={
 
         //operands to binary
         let op0=this.getBinaryReg(operands[0], linenumber);
-        let immediate=this.getImmediate(operands[1], 0, 7, linenumber);
+        let immediate=this.getImmediate(operands[1], 0, 7, 3, linenumber);
     
         return `${opcode}${op0}000${immediate}`;
     },
@@ -254,9 +262,22 @@ let instructions={
          //operands to binary
          let op0=this.getBinaryReg(operands[0], linenumber);
          let op1=this.getBinaryReg(operands[1], linenumber);
-         let immediate=this.getImmediate(operands[2], 0, 7, linenumber);
+         let immediate=this.getImmediate(operands[2], 0, 7, 3, linenumber);
      
          return `${opcode}${op0}${op1}${immediate}`;
+    },
+
+    bigImmediateLoad(mnemonic, operands, linenumber){
+        //check operands
+        this.checkOperands(operands, 1, linenumber);
+
+        //get opcode
+        let opcode=this.getOpcode(mnemonic);
+
+        //operands to binary
+        let immediate=this.getImmediate(operands[0], 0, 255, 8, linenumber);
+    
+        return `${opcode}0${immediate}`;
     },
 
     memoryLoad(mnemonic, operands, linenumber){
