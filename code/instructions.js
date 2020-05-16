@@ -37,6 +37,7 @@ let instructions={
             case 'AND':
             case 'OR':
             case 'XOR':
+            case 'MUL':
                 word=this.threeOps(mnemonic, operands, linenumber)
                 break;
 
